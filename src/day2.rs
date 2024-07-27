@@ -92,7 +92,7 @@ pub fn day2a() {
     };
     let possible_games = games.iter().filter(|x| possible_draw(x, &compare));
     let sum_of_ids = possible_games.fold(0, |cm, x| cm + x.number);
-    println!("Sum of ids of possible games {}", sum_of_ids);
+    println!("DAY2A: Sum of ids of possible games {}", sum_of_ids);
 }
 
 /// Returns a draw:( but this represents a game
@@ -111,5 +111,5 @@ pub fn day2b() {
     let sum_of_powers = minimum_games
         .iter()
         .fold(0, |cm, x| cm + x.blue * x.green * x.red);
-    println!("The sum of powers is {}", sum_of_powers);
+    println!("DAY2B: The sum of powers is {}", sum_of_powers);
 }

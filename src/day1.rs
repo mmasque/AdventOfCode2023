@@ -13,7 +13,7 @@ pub fn day1a() {
         let number: i32 = (first + &last).parse().expect("Not a string");
         total += number;
     }
-    println!("The result is {}", total);
+    println!("DAY1A: The result is {}", total);
 }
 
 fn digit_from_word(word: &[char]) -> Option<i32> {
@@ -82,5 +82,5 @@ pub fn day1b() {
         let number: i32 = (first + &last).parse().expect("Not a string");
         total += number;
     }
-    println!("Total: {}", total);
+    println!("DAY1B: Total: {}", total);
 }
