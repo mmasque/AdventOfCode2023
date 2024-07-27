@@ -1,12 +1,13 @@
+use std::slice::Windows;
+
 use crate::helpers::read_lines;
-use std::{ops::Range, slice::{self, Windows}};
 
 pub fn day1a() {
     // read file
     let lines = read_lines("inputs/day1.txt");
     let mut total = 0;
     for line in lines {
-        let mut digits  = line.chars().filter(|c| c.is_ascii_digit()).peekable();
+        let mut digits = line.chars().filter(|c| c.is_ascii_digit()).peekable();
         let first = digits.peek().expect("No first character").to_string();
         let last = digits.last().expect("No last character").to_string();
         let number: i32 = (first + &last).parse().expect("Not a string");
@@ -27,7 +28,7 @@ fn digit_from_word(word: &[char]) -> Option<i32> {
         "seven" => Some(7),
         "eight" => Some(8),
         "nine" => Some(9),
-        _ => None
+        _ => None,
     }
 }
 
@@ -58,9 +59,8 @@ fn parse_digits(input: String) -> Vec<i32> {
             if let Some(d) = d.to_string().parse().ok() {
                 digits.push(d);
             }
-        }
-        else {
-            break
+        } else {
+            break;
         }
 
         add_if_digit(&mut threes, &mut digits);

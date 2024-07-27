@@ -1,4 +1,4 @@
-use std::fmt::Error;
+use std::{cmp::max, fmt::Error};
 
 use crate::helpers::read_lines;
 
@@ -8,7 +8,18 @@ struct Draw {
     green: i32,
     blue: i32,
 }
-
+impl Draw {
+    fn new(red: i32, green: i32, blue: i32) -> Draw {
+        Draw { red, green, blue }
+    }
+    fn maximize_each_entry(&self, other: &Draw) -> Draw {
+        Draw::new(
+            max(self.red, other.red),
+            max(self.green, other.green),
+            max(self.blue, other.blue),
+        )
+    }
+}
 impl TryFrom<&str> for Draw {
     type Error = Error;
     fn try_from(value: &str) -> Result<Self, Self::Error> {
@@ -70,8 +81,9 @@ fn possible_draw(occurred: &Game, compare: &Draw) -> bool {
         .iter()
         .all(|x| x.blue <= compare.blue && x.red <= compare.red && x.green <= compare.green)
 }
+
 pub fn day2a() {
-    let lines = read_lines("inputs/day2a.txt");
+    let lines = read_lines("inputs/day2.txt");
     let games: Vec<Game> = lines.iter().map(|l| l.try_into().unwrap()).collect();
     let compare = Draw {
         red: 12,
@@ -79,6 +91,25 @@ pub fn day2a() {
         blue: 14,
     };
     let possible_games = games.iter().filter(|x| possible_draw(x, &compare));
-    let sum_of_ids = possible_games.fold(0, |curr, x| curr + x.number);
+    let sum_of_ids = possible_games.fold(0, |cm, x| cm + x.number);
     println!("Sum of ids of possible games {}", sum_of_ids);
+}
+
+/// Returns a draw:( but this represents a game
+/// Panics if there are no draws in the game
+fn minimum_game(game: Game) -> Draw {
+    game.draws
+        .into_iter()
+        .reduce(|cm, x| cm.maximize_each_entry(&x))
+        .unwrap()
+}
+
+pub fn day2b() {
+    let lines = read_lines("inputs/day2.txt");
+    let games: Vec<Game> = lines.iter().map(|l| l.try_into().unwrap()).collect();
+    let minimum_games: Vec<Draw> = games.into_iter().map(minimum_game).collect();
+    let sum_of_powers = minimum_games
+        .iter()
+        .fold(0, |cm, x| cm + x.blue * x.green * x.red);
+    println!("The sum of powers is {}", sum_of_powers);
 }
